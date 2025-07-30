@@ -31,7 +31,7 @@ A modern web application that helps you discover exciting activities and get ins
 - **API Integration**: Multiple external APIs with error handling
 - **Local Storage**: Persistent history without database setup
 - **Rate Limiting**: Built-in protection against abuse
-- **CORS Support**: Cross-origin request handling
+- **CORS Support**: Cross-origin resource sharing enabled
 
 ## 🚀 Quick Start
 
@@ -39,6 +39,7 @@ A modern web application that helps you discover exciting activities and get ins
 
 - Node.js (v14 or higher)
 - npm or yarn
+- Docker (for containerized deployment)
 
 ### Installation
 
@@ -64,6 +65,93 @@ A modern web application that helps you discover exciting activities and get ins
 4. **Open your browser**
    Navigate to `http://localhost:3000`
 
+## 🐳 Docker Deployment
+
+### Why Docker?
+
+Docker containerization provides several advantages:
+
+- **Consistency**: Same environment across development and production
+- **Portability**: Run anywhere Docker is installed
+- **Isolation**: No conflicts with system dependencies
+- **Scalability**: Easy to deploy multiple instances
+- **Security**: Non-root user and minimal attack surface
+
+### Automated Deployment (Recommended)
+
+We've created a `deploy.sh` script to simplify the entire deployment process:
+
+```bash
+# Make the script executable
+chmod +x deploy.sh
+
+# Update your Docker Hub username in deploy.sh
+nano deploy.sh  # Change DOCKER_USERNAME="your-username"
+
+# Run the automated deployment
+./deploy.sh
+```
+
+**What the script does:**
+
+1. ✅ **Builds Docker image** with proper optimization
+2. ✅ **Tests locally** to ensure functionality
+3. ✅ **Logs into Docker Hub** automatically
+4. ✅ **Pushes to Docker Hub** with proper tagging
+5. ✅ **Provides clear feedback** at each step
+
+### Manual Deployment
+
+If you prefer manual control:
+
+```bash
+# 1. Build the Docker image
+docker build -t your-username/boredom-buster:v1 .
+
+# 2. Test locally
+docker run -d --name test-app -p 8080:8080 your-username/boredom-buster:v1
+curl http://localhost:8080/api/inspire
+
+# 3. Stop test container
+docker stop test-app && docker rm test-app
+
+# 4. Login to Docker Hub
+docker login
+
+# 5. Push to Docker Hub
+docker push your-username/boredom-buster:v1
+```
+
+### Running the Container
+
+Once deployed, anyone can run your application:
+
+```bash
+# Pull the image
+docker pull anglebert/boredom-buster:v1
+
+# Run the container
+docker run -d --name boredom-buster -p 8080:8080 anglebert/boredom-buster:v1
+
+# Access the application
+curl http://localhost:8080/api/inspire
+```
+
+### Docker Compose (Development)
+
+For local development with Docker Compose:
+
+```bash
+# Start with Docker Compose
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+
+# Stop
+docker-compose down
+```
+
 ## 📁 Project Structure
 
 ```
@@ -80,6 +168,9 @@ Play-with-APIs-assignment/
 │   ├── index.html             # Main frontend page
 │   ├── styles.css             # Styling
 │   └── script.js              # Frontend JavaScript
+├── Dockerfile                 # Container configuration
+├── docker-compose.yml         # Development setup
+├── deploy.sh                  # Automated deployment script
 ├── package.json               # Dependencies and scripts
 └── README.md                  # This file
 ```
@@ -143,6 +234,14 @@ Play-with-APIs-assignment/
 - **Local Storage**: Client-side data persistence
 - **Copy API**: Modern clipboard functionality
 
+### **Docker Features**
+
+- **Multi-stage Build**: Optimized image size
+- **Security**: Non-root user execution
+- **Health Checks**: Automatic container monitoring
+- **Environment Variables**: Configurable settings
+- **Port Mapping**: Flexible port configuration
+
 ### **API Endpoints**
 
 #### `GET /api/inspire`
@@ -204,6 +303,12 @@ curl "http://localhost:3000/api/inspire/advice/search?q=success"
 - Responsive breakpoints at 768px
 - Color scheme: Blues and grays with accent colors
 
+### **Docker Customization**
+
+- **Port**: Change `EXPOSE 8080` in Dockerfile
+- **Environment**: Add variables in docker-compose.yml
+- **Dependencies**: Update package.json and rebuild
+
 ### **Feature Extensions**
 
 - **User Accounts**: Add authentication system
@@ -225,6 +330,17 @@ lsof -i :3000
 kill -9 <PID>
 ```
 
+**Docker build fails:**
+
+```bash
+# Check Docker is running
+docker info
+
+# Clean up and rebuild
+docker system prune -f
+docker build --no-cache -t your-username/boredom-buster:v1 .
+```
+
 **API errors:**
 
 - Check internet connection
@@ -236,6 +352,20 @@ kill -9 <PID>
 - Ensure server is running on port 3000
 - Check browser console for CORS errors
 - Verify all files are in the `public/` directory
+
+**Docker container issues:**
+
+```bash
+# Check container logs
+docker logs <container-name>
+
+# Restart container
+docker restart <container-name>
+
+# Remove and recreate
+docker rm -f <container-name>
+docker run -d --name <container-name> -p 8080:8080 your-username/boredom-buster:v1
+```
 
 ### **Debug Mode**
 
@@ -263,6 +393,7 @@ This project is open source and available under the [MIT License](LICENSE).
 - **Advice Slip API**: For wise advice
 - **ZenQuotes API**: For motivational quotes
 - **Express.js**: For the web framework
+- **Docker**: For containerization
 - **Modern Web APIs**: For clipboard and storage functionality
 
 ---
