@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boredom Buster - Find Your Next Adventure</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <h2>Boredom Buster</h2>
+        </div>
+        <ul class="nav-menu">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#app">App</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <h1>Turn Boredom Into Adventure</h1>
+        <p>
+          Discover exciting activities and wise advice to make every moment
+          count.
+        </p>
+        <a href="#app" class="cta-button">Get Started</a>
+      </div>
+    </section>
+
+    <section id="app" class="app-section">
+      <div class="container">
+        <h2>Find Your Next Activity</h2>
+        <p>Customize your search and get personalized suggestions</p>
+
+        <div class="controls-section">
+          <form id="controls" autocomplete="off">
+            <div class="control-group">
+              <label for="type">Category</label>
+              <select id="type" name="type">
+                <option value="">Any Category</option>
+                <option value="education">Education</option>
+                <option value="recreational">Recreational</option>
+                <option value="social">Social</option>
+                <option value="diy">DIY</option>
+                <option value="charity">Charity</option>
+                <option value="cooking">Cooking</option>
+                <option value="relaxation">Relaxation</option>
+                <option value="music">Music</option>
+                <option value="busywork">Busywork</option>
+              </select>
+            </div>
+            <div class="control-group">
+              <label for="participants">Participants</label>
+              <input
+                type="number"
+                id="participants"
+                name="participants"
+                min="1"
+                max="8"
+                placeholder="Any"
+              />
+            </div>
+            <button type="submit" id="apply-btn">Find Activity</button>
+          </form>
+        </div>
+
+        <div id="error-message" class="error-message"></div>
+
+        <div class="results-grid">
+          <div class="result-card" id="activity-card">
+            <h3>Your Activity</h3>
+            <p id="activity">Click "Find Activity" to get started</p>
+            <div id="activity-meta" class="meta-info"></div>
+            <button id="copy-activity" class="copy-btn">Copy Activity</button>
+          </div>
+
+          <div class="result-card" id="advice-card">
+            <h3>Wise Advice</h3>
+            <p id="advice">Get inspired with thoughtful advice</p>
+            <button id="copy-advice" class="copy-btn">Copy Advice</button>
+          </div>
+
+          <div class="result-card" id="quote-card">
+            <h3>Motivational Quote</h3>
+            <p id="quote">Get inspired with motivational quotes</p>
+            <p id="quote-author" class="quote-author"></p>
+            <button id="copy-quote" class="copy-btn">Copy Quote</button>
+          </div>
+        </div>
+
+        <div class="action-section">
+          <button id="refresh-btn" class="main-btn">Get New Inspiration</button>
+        </div>
+
+        <div class="history-section">
+          <h3>Recent Activities</h3>
+          <ul id="history-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="about-section">
+      <div class="container">
+        <h2>About Boredom Buster</h2>
+        <div class="about-content">
+          <div class="about-text">
+            <p>
+              Boredom Buster helps you discover exciting activities and
+              meaningful advice when you're feeling stuck. Whether you're
+              looking for educational pursuits, social activities, or creative
+              projects, we've got you covered.
+            </p>
+            <p>
+              Our app combines the power of the Bored API for activity
+              suggestions and the Advice Slip API for wisdom and guidance.
+            </p>
+          </div>
+          <div class="features">
+            <div class="feature">
+              <h4>Customizable Search</h4>
+              <p>Filter activities by category and number of participants</p>
+            </div>
+            <div class="feature">
+              <h4>Wise Advice</h4>
+              <p>Get thoughtful advice to complement your activities</p>
+            </div>
+            <div class="feature">
+              <h4>Activity History</h4>
+              <p>Keep track of your recent discoveries</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2025 Boredom Buster. Built with modern web technologies.</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
