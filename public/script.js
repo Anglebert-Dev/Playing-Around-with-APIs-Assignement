@@ -87,7 +87,7 @@ async function fetchInspiration(customFilters) {
   metaElem.textContent = "";
   clearError();
 
-  let url = "http://localhost:3000/api/inspire";
+  let url = "/api/inspire";
   if (customFilters !== undefined) {
     url += customFilters;
   } else {

@@ -420,25 +420,3 @@ This project is open source and available under the [MIT License](LICENSE).
 
 ---
 
-## 🐳 How to Pull and Run the Docker Container Locally
-
-If you have Docker installed, you can run the app with just two commands:
-
-```bash
-# Pull the latest image from Docker Hub
-docker pull anglebert/boredom-buster:v1
-
-# Run the container (maps port 8080 in the container to 8080 on your machine)
-docker run -d --name boredom-buster -p 8080:8080 anglebert/boredom-buster:v1
-```
-
-- **Frontend:** Open [http://localhost:8080](http://localhost:8080) in your browser
-- **API:** Test with `curl http://localhost:8080/api/inspire`
-
-To stop and remove the container:
-
-```bash
-docker stop boredom-buster && docker rm boredom-buster
-```
-
----

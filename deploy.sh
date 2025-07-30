@@ -74,7 +74,4 @@ else
 fi
 
 echo -e "${GREEN}🚀 Deployment complete!${NC}"
-echo -e "${YELLOW}📋 Next steps:${NC}"
-echo -e "   1. Update DOCKER_USERNAME in this script"
-echo -e "   2. Deploy to your lab machines (web-01, web-02)"
-echo -e "   3. Configure load balancer (lb-01)" 
+                                                                                                                        
