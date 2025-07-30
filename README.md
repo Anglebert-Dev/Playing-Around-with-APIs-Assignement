@@ -46,7 +46,7 @@ A modern web application that helps you discover exciting activities and get ins
 1. **Clone the repository**
 
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Anglebert-Dev/Playing-Around-with-APIs-Assignement.git
    cd Play-with-APIs-assignment
    ```
 
@@ -56,14 +56,17 @@ A modern web application that helps you discover exciting activities and get ins
    npm install
    ```
 
-3. **Start the server**
+3. **Start the application**
 
    ```bash
    npm start
    ```
 
-4. **Open your browser**
-   Navigate to `http://localhost:3000`
+4. **Access the application**
+   - **Frontend**: Navigate to `http://localhost:3000`
+   - **API Endpoint**: `http://localhost:3000/api/inspire`
+
+**Note**: This is a **full-stack application** where the Express.js backend serves both the API and the frontend static files from the same port.
 
 ## 🐳 Docker Deployment
 
@@ -256,7 +259,11 @@ Returns a complete inspiration package (activity + advice + quote)
 **Example:**
 
 ```bash
+# Local development
 curl "http://localhost:3000/api/inspire?type=recreational&participants=2"
+
+# Docker container
+curl "http://localhost:8080/api/inspire?type=recreational&participants=2"
 ```
 
 **Response:**
@@ -285,7 +292,11 @@ Search for advice by keyword
 **Example:**
 
 ```bash
+# Local development
 curl "http://localhost:3000/api/inspire/advice/search?q=success"
+
+# Docker container
+curl "http://localhost:8080/api/inspire/advice/search?q=success"
 ```
 
 ## 🎨 Customization
@@ -399,3 +410,35 @@ This project is open source and available under the [MIT License](LICENSE).
 ---
 
 **Built with ❤️ using modern web technologies**
+
+## ⚠️ Performance Notice
+
+> **Note:**
+> This application relies on free, public APIs (Bored API, Advice Slip API, ZenQuotes).
+> **Response times may occasionally be slow** (a few seconds) due to network latency, API rate limits, or throttling by the API providers.
+> This is normal for public APIs and not a bug in the application.
+
+---
+
+## 🐳 How to Pull and Run the Docker Container Locally
+
+If you have Docker installed, you can run the app with just two commands:
+
+```bash
+# Pull the latest image from Docker Hub
+docker pull anglebert/boredom-buster:v1
+
+# Run the container (maps port 8080 in the container to 8080 on your machine)
+docker run -d --name boredom-buster -p 8080:8080 anglebert/boredom-buster:v1
+```
+
+- **Frontend:** Open [http://localhost:8080](http://localhost:8080) in your browser
+- **API:** Test with `curl http://localhost:8080/api/inspire`
+
+To stop and remove the container:
+
+```bash
+docker stop boredom-buster && docker rm boredom-buster
+```
+
+---

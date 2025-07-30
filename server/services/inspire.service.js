@@ -1,45 +1,73 @@
 import axios from "axios";
 
 export async function fetchInspiration(filters) {
-  let activityData;
-  // If any filters, use /filter, else use /random
-  if (
-    filters.type ||
-    filters.participants ||
-    filters.price ||
-    filters.accessibility ||
-    filters.key
-  ) {
-    const params = new URLSearchParams();
-    if (filters.type) params.append("type", filters.type);
-    if (filters.participants)
-      params.append("participants", filters.participants);
-    // price, accessibility, key are not supported by appbrewery API, so we skip them
-    const url = `https://bored-api.appbrewery.com/filter?${params.toString()}`;
-    const res = await axios.get(url);
-    // Returns an array, pick a random one if available
-    if (Array.isArray(res.data) && res.data.length > 0) {
-      activityData = res.data[Math.floor(Math.random() * res.data.length)];
+  let activityData = null;
+  let activityError = null;
+  let advice = null;
+  let adviceError = null;
+  let quote = null;
+  let quoteError = null;
+
+  // Fetch activity
+  try {
+    if (
+      filters.type ||
+      filters.participants ||
+      filters.price ||
+      filters.accessibility ||
+      filters.key
+    ) {
+      const params = new URLSearchParams();
+      if (filters.type) params.append("type", filters.type);
+      if (filters.participants)
+        params.append("participants", filters.participants);
+      // price, accessibility, key are not supported by appbrewery API, so we skip them
+      const url = `https://bored-api.appbrewery.com/filter?${params.toString()}`;
+      const res = await axios.get(url);
+      if (Array.isArray(res.data) && res.data.length > 0) {
+        activityData = res.data[Math.floor(Math.random() * res.data.length)];
+      } else {
+        activityError = "No activity found for the given filters.";
+      }
     } else {
-      throw new Error("No activity found with the specified parameters");
+      const res = await axios.get("https://bored-api.appbrewery.com/random");
+      activityData = res.data;
     }
-  } else {
-    const res = await axios.get("https://bored-api.appbrewery.com/random");
-    activityData = res.data;
+  } catch (err) {
+    activityError = "Failed to fetch activity.";
   }
 
-  const [adviceRes, quoteRes] = await Promise.all([
-    axios.get("https://api.adviceslip.com/advice"),
-    axios.get("https://zenquotes.io/api/random"),
-  ]);
+  // Fetch advice
+  try {
+    const adviceRes = await axios.get("https://api.adviceslip.com/advice");
+    advice = adviceRes.data.slip.advice;
+  } catch (err) {
+    adviceError = "Failed to fetch advice.";
+  }
+
+  // Fetch quote
+  try {
+    const quoteRes = await axios.get("https://zenquotes.io/api/random");
+    quote = {
+      text: quoteRes.data[0].q,
+      author: quoteRes.data[0].a,
+    };
+  } catch (err) {
+    if (err.response && err.response.status === 429) {
+      quoteError =
+        "Too many requests for motivational quotes. Please try again later.";
+    } else {
+      quoteError = "Failed to fetch motivational quote.";
+    }
+  }
 
   return {
     activity: activityData,
-    advice: adviceRes.data.slip.advice,
-    quote: {
-      text: quoteRes.data[0].q,
-      author: quoteRes.data[0].a,
-    },
+    activityError,
+    advice,
+    adviceError,
+    quote,
+    quoteError,
   };
 }
 
@@ -48,7 +76,6 @@ export async function fetchAdviceSearch(query) {
     query
   )}`;
   const res = await axios.get(url);
-  // If no results, API returns a message object
   if (res.data.message) {
     return { total_results: 0, slips: [] };
   }
