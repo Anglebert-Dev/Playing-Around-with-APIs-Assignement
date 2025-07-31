@@ -380,16 +380,16 @@ docker exec lb-01 cat /proc/net/dev
 
    ```bash
    # Test individual servers
-   curl http://localhost:8080/api/inspire  # web-01
-   curl http://localhost:8081/api/inspire  # web-02
+   curl http://localhost:8080/  # web-01
+   curl http://localhost:8081/  # web-02
 
    # Test load balancer (round-robin)
-   curl http://localhost:8082/api/inspire  # lb-01
+   curl http://localhost:8082/  # lb-01
 
    # Verify load balancing
    for i in {1..5}; do
      echo "Request $i:"
-     curl -s http://localhost:8082/api/inspire | jq -r '.activity.activity'
+     curl -s http://localhost:8082/ | jq -r '.activity.activity'
      echo
    done
    ```
