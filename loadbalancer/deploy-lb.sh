@@ -1,25 +1,21 @@
 #!/bin/bash
 
-# Configuration
 DOCKER_USERNAME="anglebert"
 LB_NAME="haproxy-loadbalancer"
 VERSION="v1"
 
-# Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 echo -e "${YELLOW}🐳 Building and Deploying HAProxy Load Balancer to Docker Hub${NC}"
 
-# Check if Docker is running
 if ! docker info > /dev/null 2>&1; then
     echo -e "${RED}❌ Docker is not running. Please start Docker and try again.${NC}"
     exit 1
 fi
 
-# Build the Load Balancer Docker image
 echo -e "${YELLOW}📦 Building Load Balancer Docker image...${NC}"
 docker build -t ${DOCKER_USERNAME}/${LB_NAME}:${VERSION} .
 
@@ -30,14 +26,11 @@ fi
 
 echo -e "${GREEN}✅ Load Balancer Docker image built successfully!${NC}"
 
-# Test locally (using different port to avoid conflict)
 echo -e "${YELLOW}🧪 Testing load balancer locally...${NC}"
 docker run -d --name test-${LB_NAME} -p 8081:8080 ${DOCKER_USERNAME}/${LB_NAME}:${VERSION}
 
-# Wait for container to start
 sleep 5
 
-# Test the load balancer (accept 403 as valid response from Cloudflare)
 echo -e "${YELLOW}🔍 Testing load balancer endpoint...${NC}"
 HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:8081)
 if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "403" ]; then
@@ -49,11 +42,9 @@ else
     exit 1
 fi
 
-# Stop and remove test container
 docker stop test-${LB_NAME}
 docker rm test-${LB_NAME}
 
-# Login to Docker Hub
 echo -e "${YELLOW}🔐 Logging into Docker Hub...${NC}"
 docker login
 
@@ -62,7 +53,6 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-# Push to Docker Hub
 echo -e "${YELLOW}📤 Pushing Load Balancer to Docker Hub...${NC}"
 docker push ${DOCKER_USERNAME}/${LB_NAME}:${VERSION}
 

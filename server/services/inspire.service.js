@@ -8,7 +8,6 @@ export async function fetchInspiration(filters) {
   let quote = null;
   let quoteError = null;
 
-  // Fetch activity
   try {
     if (
       filters.type ||
@@ -21,7 +20,6 @@ export async function fetchInspiration(filters) {
       if (filters.type) params.append("type", filters.type);
       if (filters.participants)
         params.append("participants", filters.participants);
-      // price, accessibility, key are not supported by appbrewery API, so we skip them
       const url = `https://bored-api.appbrewery.com/filter?${params.toString()}`;
       const res = await axios.get(url);
       if (Array.isArray(res.data) && res.data.length > 0) {
@@ -37,7 +35,6 @@ export async function fetchInspiration(filters) {
     activityError = "Failed to fetch activity.";
   }
 
-  // Fetch advice
   try {
     const adviceRes = await axios.get("https://api.adviceslip.com/advice");
     advice = adviceRes.data.slip.advice;
@@ -45,7 +42,6 @@ export async function fetchInspiration(filters) {
     adviceError = "Failed to fetch advice.";
   }
 
-  // Fetch quote
   try {
     const quoteRes = await axios.get("https://zenquotes.io/api/random");
     quote = {

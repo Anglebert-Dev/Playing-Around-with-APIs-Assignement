@@ -8,15 +8,11 @@ import inspireRoutes from "./routes/inspire.routes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Load environment variables
-// dotenv.config();
-
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(
   cors({
     origin: "*",
@@ -29,22 +25,19 @@ app.use(morgan("dev"));
 app.use(express.static(path.join(__dirname, "../public")));
 app.use(
   rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
+    windowMs: 15 * 60 * 1000,
+    max: 100,
     standardHeaders: true,
     legacyHeaders: false,
   })
 );
 
-// --- Modular Routes Placeholder ---
 app.use("/api/inspire", inspireRoutes);
 
-// Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({ status: "ok" });
 });
 
-// --- Start Server ---
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });

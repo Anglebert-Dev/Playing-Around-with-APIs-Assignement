@@ -8,7 +8,6 @@ const historyList = document.getElementById("history-list");
 
 let history = [];
 
-// Load history from localStorage on page load
 function loadHistory() {
   const savedHistory = localStorage.getItem("boredomBusterHistory");
   if (savedHistory) {
@@ -17,7 +16,6 @@ function loadHistory() {
   }
 }
 
-// Save history to localStorage
 function saveHistory() {
   localStorage.setItem("boredomBusterHistory", JSON.stringify(history));
 }
@@ -148,8 +146,6 @@ document.getElementById("copy-quote").addEventListener("click", () => {
   setTimeout(clearError, 1200);
 });
 
-// Load history when page loads
 loadHistory();
 
-// Initial load
 fetchInspiration();

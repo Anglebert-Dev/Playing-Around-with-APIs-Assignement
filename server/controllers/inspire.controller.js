@@ -4,9 +4,7 @@ import {
 } from "../services/inspire.service.js";
 import Joi from "joi";
 
-// GET /api/inspire
 export async function getInspiration(req, res) {
-  // Validate query params for Bored API
   const schema = Joi.object({
     type: Joi.string().valid(
       "education",
@@ -36,7 +34,6 @@ export async function getInspiration(req, res) {
   }
 }
 
-// GET /api/inspire/advice/search?q=keyword
 export async function searchAdvice(req, res) {
   const q = req.query.q;
   if (!q) return res.status(400).json({ error: "Missing search query (q)." });
